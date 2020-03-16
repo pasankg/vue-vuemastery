@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .variant {
+            display: inline-block;
+        }
+
+        .color-box {
+            background-color: green;
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .outOfStock {
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="app">
+
+                <div class="product-image">
+                    <img v-bind:src="mainImage" :alt="alt"/>
+                </div>
+
+                <div class="product-info">
+                    <h1>{{computedTitle}}</h1>
+                    <p v-if="inStock">{{inStock}}</p>
+                    <p v-else="inStock" class="outOfStock">Out of Stock</p>
+                    <p v-show="onSale">On Sale</p>
+                    <li v-for="detail in details">{{detail}}</li>
+                    <div class="variant" v-for="(variant, index) in variants">
+                        <div class="color-box"
+                             :name="variant.variantColor"
+                             :style="{backgroundColor: variant.variantColor}"
+                             :key="variant.variantID"
+                             @mouseover="updateProductImage(index)">
+                        </div>
+                    </div>
+                </div>
+                <button
+                        :disabled="!inStock || reachedMaxAddToCart"
+                        v-on:click="addToCart"
+                        :class="{outOfStock: !inStock || reachedMaxAddToCart}"
+                >
+                    Add to cart
+                </button>
+                <button
+                        :disabled="!inStock || cart == 0"
+                        v-on:click="removeFromCart"
+                        :class="{outOfStock: !inStock || cart == 0}"
+                >
+                    Remove from cart
+                </button>
+                <div class="cart">
+                    <p>Cart ({{cart}})</p>
+                </div>
+                <div>
+                    <p>Total Products in cart({{totalCart}})</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="main.js"></script>
+</html>
